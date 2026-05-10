@@ -1060,9 +1060,45 @@ function renderHeatmap(map) {
   const jan1 = new Date(currentYear, 0, 1);
   const dec31 = new Date(currentYear, 11, 31);
 
+  // Calculate month positions - find the first week column for each month
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthPositions = [];
+
+  // Start from first Sunday before or on Jan 1
+  let cursor = new Date(jan1);
+  cursor.setDate(cursor.getDate() - cursor.getDay());
+
+  let weekCount = 0;
+  let currentMonth = -1;
+
+  // First pass: count weeks before each month
+  while (cursor <= dec31) {
+    const month = cursor.getMonth();
+    if (month !== currentMonth) {
+      if (monthPositions.length < 12) {
+        monthPositions.push({ month: cursor.getMonth(), weekIndex: weekCount });
+      }
+      currentMonth = month;
+    }
+    // Move to next week (7 days)
+    cursor.setDate(cursor.getDate() + 7);
+    weekCount++;
+  }
+
+  // Generate month labels with proper spacing
+  const totalWeeks = weekCount;
   const labelEl = document.getElementById('month-labels');
-  labelEl.innerHTML = months.map(m=>`<span class="month-label-item">${m}</span>`).join('');
+
+  // Build month labels - calculate flex basis based on position
+  let monthLabelsHTML = '';
+  for (let i = 0; i < 12; i++) {
+    const pos = monthPositions[i];
+    const nextPos = monthPositions[i + 1];
+    const weeksInMonth = nextPos ? nextPos.weekIndex - pos.weekIndex : totalWeeks - pos.weekIndex;
+    const flex = weeksInMonth;
+    monthLabelsHTML += `<span class="month-label-item" style="flex: ${flex}">${months[pos.month]}</span>`;
+  }
+  labelEl.innerHTML = monthLabelsHTML;
 
   const dayEl = document.getElementById('day-labels');
   const dayNames = ['','Mon','','Wed','','Fri',''];
