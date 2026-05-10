@@ -490,6 +490,8 @@ EVERY WEEK — non-negotiable:
 | Org | Language | Focus | Good First Issue Label |
 |-----|----------|-------|----------------------|
 | **Vyrox Security** | Rust | Your startup — become the maintainer | — |
+| **Keiron Linux** | Rust | Your OS distro — keironlinux org, ship it and maintain it | — |
+| **Keirox** | Rust | Red-team proxy (standalone, ships in Keiron Linux) | — |
 | **Sigma HQ** | YAML/Python | Detection rules — easiest entry point | `good first issue` |
 | **Zeek** | C++/Script | Network protocol analysis | `help wanted` |
 | **Suricata** | C | IDS/IPS engine | `good first issue` |
@@ -767,9 +769,9 @@ ALL CODE:
 
 ---
 
-### Core Project — Vyrox Security | Weeks 1–24 | AI-Augmented SOC Platform
+### Project 1 — Vyrox Security | Weeks 1–24 | AI-Augmented SOC Platform
 
-**The main thread.** You build this while learning everything else.
+**Your startup.** Pays the bills. Build this while learning everything else.
 
 - Sensor agents (Rust): process, network, file telemetry
 - IOC ingestion + matching engine
@@ -783,99 +785,172 @@ ALL CODE:
 
 ---
 
-### Project 2 — Noxy | Red-Team Proxy (Rust)
+### Project 2 — Keiron Linux | Rust Cybersecurity Operating System
 
-Learn Rust systems programming by building a proxy framework.
+**A bootable OS named after you. A real distro that people install and use.**
 
-- HTTP/SOCKS5 proxy with middleware pipeline
-- TLS MITM for traffic inspection
-- Tor/I2P backends, domain fronting
-- Protocol tunneling (DNS, ICMP, WebSocket)
+Inspiration: Kali Linux meets Tails meets a Rust-first philosophy. Memory-safe by default. Hardened from boot. Built with and for the cybersecurity community. Named after the builder — this is your legacy project.
 
-**When:** Weeks 2–10 (runs alongside Rust learning)
+**Why this and standalone tools?**
+Keiron Linux is the flagship. The tools you build alongside it are real packages that ship inside it — but they exist as standalone projects too, so the security community can use them independently, contribute to them, and they build your reputation across multiple repos. One OS + many respected tools is a stronger signal than a single all-in-one project.
 
 ---
 
-### Project 3 — Termino | Secure Terminal Mesh
+### Keiron Linux Core
 
-Learn distributed systems by building a secure communications mesh.
+**A bootable, installable Linux distro built in Rust. Not a toy kernel.**
 
-- Noise protocol handshake
-- Tor-style onion routing
-- Gossip protocol for peer discovery
-- Encrypted dead-drops
+Core architecture:
+- Custom Rust bootloader (stage 1 + stage 2, UEFI + Legacy BIOS)
+- Kernel in safe Rust with no_std — no unsafe blocks in production paths
+- Memory-safe IDT, APIC, SMP, interrupt handling
+- VFS layer (ext2, FAT, ISO9660, BTF)
+- TCP/IP stack (embedded, hardened)
+- Built-in EDR capabilities (syscall monitoring, process telemetry)
+- Secure by default: ASLR, stack canaries, W^X memory, noexec heap, mitigations for Spectre/Meltdown
+- Hardened userspace: musl-based rootfs, runit init system, no systemd
+- Live ISO build system (USB-flashable, tested in QEMU + real hardware)
+- Full package manager: KeironPkg (Rust, signed packages, SHA256 checksums, reproducible builds)
+- KeironDev SDK: Rust cross-compilation toolchain, cargo-keiron targets, sysroots
+- KeironISO build scripts: produces bootable ISO via standard tooling (xorriso, grub2, mtools)
+- KeironDocs: installation guide, hardening guide, package development guide, architecture docs
 
-**When:** Weeks 8–16 (after you understand libp2p + distributed systems)
-
----
-
-### Project 4 — SigMatrix | Detection Rule Engine
-
-Learn detection engineering by building your own SIEM rules engine.
-
-- Sigma rule parser (convert to multiple backends)
-- YARA-style pattern matching
-- Event correlation engine
-- False positive tuning interface
-
-**When:** Weeks 4–12 (runs alongside ATT&CK studies)
-
----
-
-### Project 5 — GhostPacket | Packet Analysis Toolkit
-
-Learn networking by building a packet analysis tool.
-
-- PCAP parsing library in Rust
-- Protocol dissectors (TCP, UDP, HTTP, TLS, DNS)
-- Anomaly detection on traffic patterns
-- Zeek-style log generation
-
-**When:** Weeks 6–14 (runs alongside TCP/IP learning)
+**Phases:**
+- **Weeks 10–12:** Bootstrap repo + architecture doc + bare ISO skeleton (boots to shell in QEMU)
+- **Weeks 13–16:** Kernel core + VFS + memory management + process scheduler
+- **Weeks 17–20:** Networking stack + EDR hooks + hardened userspace
+- **Weeks 20–22:** KeironPkg package manager v1 + KeironDev SDK
+- **Weeks 22–24:** First public ISO + CI/CD pipeline + documentation + security policy + release
 
 ---
 
-### Project 6 — MemoryHound | Memory Forensics
+### Standalone Tools (Packages for Keiron Linux, Ships Separently)
 
-Learn malware analysis by building a Volatility-style tool.
+These live in their own GitHub repos. Each is installable independently. Each ships in Keiron Linux by default.
 
-- Windows memory dump parsing
-- Process reconstruction
-- Malicious artifact detection
-- Plugin architecture for extensibility
+| Tool | Repo | Purpose | Lang |
+|------|------|---------|------|
+| **Keirox** | keirox-rs | Red-team proxy framework (HTTP/SOCKS5, TLS MITM, domain fronting) | Rust |
+| **Termino** | terminokeiron | Secure terminal mesh (Noise protocol, onion routing, gossip discovery) | Rust |
+| **SigMatrix** | sigmatrix-keiron | Detection rule engine (Sigma parser, YARA matching, correlation engine) | Rust |
+| **GhostPacket** | ghostpacket-keiron | Packet analysis toolkit (PCAP parsing, protocol dissectors, Zeek-log output) | Rust |
+| **MemoryHound** | memoryhound-keiron | Memory forensics framework (Windows dump parsing, process reconstruction) | Rust |
+| **RedOps** | redops-keiron | Adversary emulation engine (Atomic Red Team integration, campaign planning) | Rust |
 
-**When:** Weeks 12–20 (after Windows Internals + Practical Malware Analysis)
+**Rule:** Each tool ships with: README, architecture doc, CONTRIBUTING.md, CI, tests (≥70% coverage), ≥1 crate on crates.io, ≥1 merged external PR before it ships in the Keiron Linux ISO. No tool enters the ISO without this baseline.
 
 ---
 
-### Project 7 — RedOps | Adversary Emulation
+### Production-Grade Requirements (What Makes People Use It)
 
-Learn red teaming by automating attack chains.
+This is the difference between another abandoned hobby repo and a distro people trust. Every item below is non-negotiable for graduation.
 
-- Atomic Red Team integration
-- Automated attack planning
-- Campaign reporting
-- Detection gap analysis
+**1. Reproducible Builds**
+- Every ISO build is reproducible from source. Hash verified by contributors independently.
+- KeironPkg packages have SHA256 + GPG signature verification.
+- Build scripts are versioned and tagged. Binary releases match source exactly.
+- NO pre-built binaries without source. No proprietary blobs.
 
-**When:** Weeks 16–24 (after you've built the blue team tools)
+**2. Security Hardening (Baseline)**
+- GCC/Clang stack protector + RELRO + PIE + Fortify Source on all userland
+- Kernel: KASLR, SMEP, SMAP, kptr_restrict, lockdown module
+- Kernel syscall filtering (seccomp-bpf) on all daemons
+- No privileged containers by default
+- Audit daemon running (auditd), immutable audit rules
+- AppArmor or SELinux profiles on all shipped services
+- UEFI Secure Boot support (signed GRUB + kernel)
+
+**3. Release Cadence + Lifecycle**
+- Semantic versioning: MAJOR.MINOR.PATCH
+- Minor releases every 4 weeks (bug fixes, packages)
+- Major releases every 6 months (new features, kernel bump)
+- End-of-life policy: 18 months security updates per major version
+- One supported stable branch at a time
+
+**4. Vulnerability Handling**
+- security@keiron.dev alias (public)
+- Private disclosure process (30-day window before public disclosure)
+- CVE coordination with mitre.org
+- Security bulletin RSS feed + mailing list
+- Signed security advisories (.asc files)
+
+**5. Automated ISO Pipeline**
+- Nightly ISO builds from main branch (GitHub Actions)
+- Weekly ISO builds from stable branch
+- Hardware testing matrix: QEMU + real hardware (2–3 confirmed working laptops)
+- ISO integrity check (SHA256, GPG signature) on every release
+- SHA256 hashes and signatures posted as separate files, never in same directory as ISO
+
+**6. CI/CD Standards**
+- All repos: Rustfmt + clippy + cargo test + cargo audit on every PR
+- KeironPkg: integration tests for every package (install, upgrade, remove, rollback)
+- KeironLinux: ISO build test on every PR (minimum: boots to login prompt)
+- No merges that break CI. No exceptions.
+- Branch protection on main: 1 reviewer minimum (self-review counts in solo phase)
+
+**7. Documentation (All Of It)**
+- Installation guide (USB, VM, bare metal)
+- Hardening guide (CIS-level, step-by-step)
+- Package development guide (how to package for KeironPkg)
+- Architecture overview (Mermaid diagrams for kernel, userspace, networking)
+- Contributing guide (fork → PR → review → merge → release)
+- Security policy (private disclosure, CVE process, patch timeline)
+- Upgrade path guide (from version N to N+1)
+- FAQ (50 questions minimum before first release)
+
+**8. Community Infrastructure**
+- keironlinux.org (GitHub Pages, free tier sufficient)
+- keironlinux/keiron-devrels Matrix channel (public, bridged to Libera IRC #keironlinux)
+- Discord or Matrix forum for user discussions
+- GitHub Discussions enabled on every repo
+- Issue templates: bug report, feature request, security advisory, documentation
+- Pull request template: what, why, how to test, checkboxes
+
+**9. Hardware Support**
+- Target CPU architectures: x86_64 (primary), aarch64 (stretch goal)
+- Tested on minimum 3 real machines (laptop models listed in docs)
+- Community hardware compatibility database (simple markdown table in docs)
+- Known-working kernel config saved as artifact
+
+**10. Community Growth Rules (Adoption Strategy)**
+- First 5 merged PRs from external contributors (not you): required for graduation
+- At least 1 YouTube tutorial or blog post from someone outside your network using Keiron Linux
+- /r/linux, /r/cybersecurity, Lobsters, Hacker News posts (organic, not spam)
+- Submit to alternative distrowatch.com with demo
+- One post in r/ossdev or r/linux From Scratch about the build process
+- Release announcement with demo ISO link + screenshots + changelog
+
+**11. Versioned API Stability**
+- KeironPkg CLI: semver stable (no breaking changes without major version bump)
+- KeironDev SDK: documented, versioned, changes tracked in CHANGELOG.md
+- Kernel syscall interface: documented, changes noted in kernel docs
+
+**12. Immutable Audit Trail**
+- All build artifacts signed with GPG (keiron.dev key)
+- Release notes: what changed, what was tested, known issues
+- No silent updates. Every patch has a reason.
+
+**Org:** Create `keironlinux` on GitHub. This is your distro. Own it, ship it, maintain it properly — unlike SnakeSec.
+
+**Rule: This is not a throwaway.** SnakeSec built tools and stopped. Keiron Linux ships, maintains, and grows. Every tool has a maintainer (you initially), a CI pipeline, and a release process. No repo goes dormant for >30 days without a public "status update" issue. Dead repos get archived with a clear explanation.
 
 ---
 
 ### Project Timeline
 
 ```
-Weeks 1-2:   Vyrox MVP + Noxy start
-Weeks 3-4:   Vyrox polish + SigMatrix start
-Weeks 5-6:   Vyrox detection mesh + GhostPacket start
-Weeks 7-8:   Noxy v1 + Termino planning
-Weeks 9-10:  Noxy complete + SigMatrix v1
-Weeks 11-12: GhostPacket v1 + MemoryHound start
-Weeks 13-14: Termino start + Vyrox AI layer
-Weeks 15-16: Termino v1 + RedOps planning
-Weeks 17-18: MemoryHound v1
-Weeks 19-20: GhostPacket complete
-Weeks 21-22: RedOps start
-Weeks 23-24: Integration + polish
+Weeks 1-2:   Vyrox MVP
+Weeks 3-4:   Vyrox polish + Keiron Linux planning (architecture doc + org setup)
+Weeks 5-6:   Vyrox detection mesh
+Weeks 7-8:   Vyrox AI layer
+Weeks 9-10:  Keiron Linux bootstrap repo + Keirox standalone repo
+Weeks 11-12: Keiron Linux bootloader v1 + Termino standalone repo
+Weeks 13-14: Keiron Linux kernel basics + SigMatrix standalone repo
+Weeks 15-16: Keiron Linux VFS + GhostPacket standalone repo
+Weeks 17-18: Keiron Linux memory management + MemoryHound standalone repo
+Weeks 19-20: Keiron Linux networking stack + RedOps standalone repo
+Weeks 21-22: Keiron Linux EDR hooks + KeironPkg package manager v1
+Weeks 23-24: Keiron Linux first public ISO + CI/CD pipeline + community infra
 ```
 
 Each project: 4–10 weeks, not 2 weeks. Realistic. Build one while learning the skills for the next.
@@ -905,15 +980,22 @@ Each project: 4–10 weeks, not 2 weeks. Realistic. Build one while learning the
 
 ##  24-Week Graduation Criteria
 
-- [ ] 15+ OSS PRs opened across 3+ organizations
+- [ ] 15+ OSS PRs opened across 4+ organizations (Vyrox, Keiron Linux, Keirox + others)
 - [ ] 3+ PRs merged into Vyrox Security
+- [ ] 2+ PRs merged into Keiron Linux
+- [ ] 2+ PRs merged into standalone tools (Keirox, Termino, SigMatrix, GhostPacket, MemoryHound, RedOps)
+- [ ] 5+ external contributors merged across all projects (community growth baseline)
 - [ ] Vyrox CONTRIBUTING.md authored and maintained
-- [ ] At least 1 new contributor mentored to merge
-- [ ] All 7 projects at MVP or beyond
+- [ ] Keiron Linux CONTRIBUTING.md, architecture doc, ISO build guide, hardening guide authored
+- [ ] All 6 standalone tools: ≥1 merged external PR each, ≥1 crate published to crates.io
+- [ ] Keiron Linux: public ISO released (keironlinux.org), reproducible builds verified
+- [ ] KeironPkg: functional package manager, signed packages
+- [ ] KeironDev SDK: published with documentation
+- [ ] At least 1 YouTube/blog post from external user using Keiron Linux or any standalone tool
 - [ ] 24 blog posts published
 - [ ] 24 journal entries written
 - [ ] ATT&CK navigator layers for all 10 case studies
-- [ ] [CLIENT] B2B deal progressed (demo delivered )
+- [ ] [CLIENT] B2B deal progressed (demo delivered)
 
 ---
 

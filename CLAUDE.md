@@ -95,11 +95,10 @@ Based on today's work or case study, output:
 ## Project Context
 
 - Vyrox Security: AI-augmented SOC platform — PRIMARY project, completing at vyrox.dev
-- First B2B Demo: End of Week 2 — demo must be flawless
+- Keiron Linux: Bootable Rust cybersecurity distro named after you — keironlinux org on GitHub. Standalone tools (Keirox, Termino, SigMatrix, GhostPacket, MemoryHound, RedOps) ship separately AND in the ISO. Full production-grade: reproducible builds, nightly CI, security advisories, docs, community infra. This is what SnakeSec should have been.
+- First B2B Demo: End of Week 2 — Vyrox demo must be flawless
 - Language Mastery: Rust, Python, C++ from 0 to senior level
-- 7 core projects over 24 weeks (Vyrox, Noxy, Termino, SigMatrix, GhostPacket, MemoryHound, RedOps)
-- Each project gets its own repo at MVP
-- Build while you learn — realistic 4-10 week timelines
+- Build while you learn — realistic 4–10 week timelines
 - OSS contribution: 30 minutes minimum, every single day, no exceptions
 - Daily LeetCode: rotate languages (Rust/Python/C++)
 
