@@ -286,18 +286,21 @@
   }
 
   .month-labels {
-    display: flex;
-    padding-left: 28px;
+    position: relative;
+    height: 14px;
     margin-bottom: 0.4rem;
+    padding-left: 28px;
+    overflow: hidden;
   }
 
   .month-label-item {
+    position: absolute;
     font-size: 0.6rem;
     color: var(--muted);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    flex: 1;
-    min-width: 0;
+    transform: translateX(-2px);
+    white-space: nowrap;
   }
 
   .heatmap-grid-wrap {
@@ -340,6 +343,7 @@
     flex-direction: column;
     gap: 2px;
     flex-shrink: 0;
+    width: 13px;
   }
 
   .day-cell {
@@ -819,9 +823,8 @@
     <div class="year-tabs" id="year-tabs"></div>
     <span class="ctrl-label" style="margin-left:1rem;">View</span>
     <div class="view-toggle">
-      <button class="vtog active" onclick="setView('heatmap',this)">Heatmap</button>
       <button class="vtog" onclick="setView('weekly',this)">Weekly</button>
-      <button class="vtog" onclick="setView('log',this)">Log</button>
+      <button class="vtog active" onclick="setView('log',this)">Log</button>
     </div>
     <div class="sync-row">
       <span class="sync-status"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">synced</span></span>
@@ -834,22 +837,7 @@
     </div>
   </div>
 
-  <div id="view-heatmap">
-    <div class="heatmap-section">
-      <div class="section-title">Daily check-in score</div>
-      <div class="month-labels" id="month-labels"></div>
-      <div class="heatmap-grid-wrap">
-        <div class="day-labels" id="day-labels"></div>
-        <div class="heatmap-grid" id="heatmap-grid"></div>
-      </div>
-      <div class="legend">
-        <span class="legend-label">less</span>
-        <div class="legend-cells" id="legend-cells"></div>
-        <span class="legend-label">more</span>
-      </div>
-    </div>
-  </div>
-
+  
   <div id="view-weekly" style="display:none;">
     <div class="heatmap-section">
       <div class="section-title">Weekly completion</div>
@@ -994,15 +982,13 @@ function longestStreak(map) {
 }
 
 let currentYear = new Date().getFullYear();
-let currentView = 'heatmap';
+let currentView = 'log';
 let logFilter = 'all';
 
 function render() {
   const map = entryMap();
   renderHeaderStats(map);
   renderStreakRow(map);
-  renderYearTabs();
-  renderHeatmap(map);
   renderWeekly(map);
   renderLog(map);
   document.getElementById('footer-date').textContent =
@@ -1060,10 +1046,8 @@ function renderHeatmap(map) {
   const jan1 = new Date(currentYear, 0, 1);
   const dec31 = new Date(currentYear, 11, 31);
 
-  // Simple evenly-distributed month labels
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const labelEl = document.getElementById('month-labels');
-  labelEl.innerHTML = months.map(m=>`<span class="month-label-item">${m}</span>`).join('');
+  labelEl.innerHTML = '';
 
   const dayEl = document.getElementById('day-labels');
   const dayNames = ['','Mon','','Wed','','Fri',''];
@@ -1072,27 +1056,64 @@ function renderHeatmap(map) {
   const grid = document.getElementById('heatmap-grid');
   grid.innerHTML = '';
 
-  let cursor = new Date(jan1);
-  cursor.setDate(cursor.getDate() - cursor.getDay());
+  // Build weeks - each week is Sun-Sat column
+  const weeks = [];
+  const weekWidth = 13; // 11px cell + 2px gap
 
-  while (cursor <= dec31) {
+  // Find the first Sunday of or before Jan 1
+  let cursor = new Date(jan1);
+  const jan1Dow = cursor.getDay(); // 0=Sun
+  cursor.setDate(cursor.getDate() - jan1Dow); // go back to preceding Sunday
+
+  while (cursor <= dec31 || weeks.length === 0 || weeks[weeks.length-1].length > 0) {
+    const week = [];
+    for (let i = 0; i < 7; i++) {
+      week.push(new Date(cursor));
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    weeks.push(week);
+
+    // Stop after we've passed Dec 31 and completed the week containing it
+    const lastDay = week[6];
+    if (lastDay >= dec31) break;
+  }
+
+  // Position month labels based on first occurrence of each month
+  // Position each label at the exact cell where the month's first day appears
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  monthNames.forEach((name, mi) => {
+    for (let wi = 0; wi < weeks.length; wi++) {
+      for (let di = 0; di < 7; di++) {
+        const day = weeks[wi][di];
+        if (day.getMonth() === mi && day.getFullYear() === currentYear) {
+          const el = document.createElement('span');
+          el.className = 'month-label-item';
+          el.textContent = name;
+          el.style.left = (28 + wi * weekWidth + di * 13) + 'px';
+          labelEl.appendChild(el);
+          break;
+        }
+      }
+    }
+  });
+
+  weeks.forEach(week => {
     const col = document.createElement('div');
     col.className = 'week-col';
 
-    for (let i = 0; i < 7; i++) {
+    week.forEach((date, i) => {
       const cell = document.createElement('div');
-      const key = isoDate(cursor);
-      const isFuture = cursor > today;
+      const key = isoDate(date);
+      const isFuture = date > today;
       const isToday = key === isoDate(today);
-      const isThisYear = cursor.getFullYear() === currentYear;
+      const isThisYear = date.getFullYear() === currentYear;
       const entry = isThisYear ? map[key] : null;
       const score = entry ? entry.score : (isThisYear && !isFuture ? null : null);
 
       cell.className = 'day-cell ' + (isThisYear ? scoreClass(score, isFuture) : 'future');
       if (isToday) cell.classList.add('today');
 
-      const d = new Date(cursor);
-      cell.addEventListener('mouseenter', (e) => showTooltip(e, key, entry, isFuture, isThisYear, d));
+      cell.addEventListener('mouseenter', (e) => showTooltip(e, key, entry, isFuture, isThisYear, date));
       cell.addEventListener('mousemove', moveTooltip);
       cell.addEventListener('mouseleave', hideTooltip);
       cell.addEventListener('click', () => {
@@ -1100,10 +1121,9 @@ function renderHeatmap(map) {
       });
 
       col.appendChild(cell);
-      cursor.setDate(cursor.getDate()+1);
-    }
+    });
     grid.appendChild(col);
-  }
+  });
 
   const legendCells = document.getElementById('legend-cells');
   legendCells.innerHTML = [0,1,2,3,4,5,6,7].map(i=>
@@ -1229,7 +1249,6 @@ function setView(v, btn) {
   currentView = v;
   document.querySelectorAll('.vtog').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('view-heatmap').style.display = v==='heatmap'?'':'none';
   document.getElementById('view-weekly').style.display = v==='weekly'?'':'none';
   document.getElementById('view-log').style.display = v==='log'?'':'none';
 }
