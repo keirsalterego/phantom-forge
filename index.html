@@ -105,6 +105,48 @@
     text-transform: uppercase;
   }
 
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-right: auto;
+  }
+
+  .profile-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .profile-name {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .profile-username {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .profile-username a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .profile-username a:hover {
+    text-decoration: underline;
+  }
+
   .header-stats {
     display: flex;
     gap: 1px;
@@ -756,6 +798,13 @@
 <div class="shell">
 
   <header>
+    <div class="profile-section">
+      <img class="profile-img" src="https://github.com/keirsalterego.png" alt="Profile">
+      <div class="profile-info">
+        <span class="profile-name">Keir Salter</span>
+        <span class="profile-username"><a href="https://github.com/keirsalterego" target="_blank">@keirsalterego</a></span>
+      </div>
+    </div>
     <div class="logo-block">
       <div class="logo">PHANTOM</div>
       <div class="logo-sub">forge heatmap — 6-month accelerator</div>
