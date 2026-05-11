@@ -490,8 +490,8 @@ EVERY WEEK — non-negotiable:
 | Org | Language | Focus | Good First Issue Label |
 |-----|----------|-------|----------------------|
 | **Vyrox Security** | Rust | Your startup — become the maintainer | — |
-| **Keiron Linux** | Rust | Your OS distro — keironlinux org, ship it and maintain it | — |
-| **Keirox** | Rust | Red-team proxy (standalone, ships in Keiron Linux) | — |
+| **Orin Labs** | Rust | Your OS distro — orinlabs.dev, ship it and maintain it | — |
+| **Drift** | Rust | Red-team proxy (standalone, ships in Orin Labs) | — |
 | **Sigma HQ** | YAML/Python | Detection rules — easiest entry point | `good first issue` |
 | **Zeek** | C++/Script | Network protocol analysis | `help wanted` |
 | **Suricata** | C | IDS/IPS engine | `good first issue` |
@@ -785,18 +785,18 @@ ALL CODE:
 
 ---
 
-### Project 2 — Keiron Linux | Rust Cybersecurity Operating System
+### Project 2 — Orin Labs | Rust Cybersecurity Operating System
 
 **A bootable OS named after you. A real distro that people install and use.**
 
 Inspiration: Kali Linux meets Tails meets a Rust-first philosophy. Memory-safe by default. Hardened from boot. Built with and for the cybersecurity community. Named after the builder — this is your legacy project.
 
 **Why this and standalone tools?**
-Keiron Linux is the flagship. The tools you build alongside it are real packages that ship inside it — but they exist as standalone projects too, so the security community can use them independently, contribute to them, and they build your reputation across multiple repos. One OS + many respected tools is a stronger signal than a single all-in-one project.
+Orin Labs is the flagship. The tools you build alongside it are real packages that ship inside it — but they exist as standalone projects too, so the security community can use them independently, contribute to them, and they build your reputation across multiple repos. One OS + many respected tools is a stronger signal than a single all-in-one project.
 
 ---
 
-### Keiron Linux Core
+### Orin Labs Core
 
 **A bootable, installable Linux distro built in Rust. Not a toy kernel.**
 
@@ -810,34 +810,34 @@ Core architecture:
 - Secure by default: ASLR, stack canaries, W^X memory, noexec heap, mitigations for Spectre/Meltdown
 - Hardened userspace: musl-based rootfs, runit init system, no systemd
 - Live ISO build system (USB-flashable, tested in QEMU + real hardware)
-- Full package manager: KeironPkg (Rust, signed packages, SHA256 checksums, reproducible builds)
-- KeironDev SDK: Rust cross-compilation toolchain, cargo-keiron targets, sysroots
-- KeironISO build scripts: produces bootable ISO via standard tooling (xorriso, grub2, mtools)
+- Full package manager: Loom (Rust, signed packages, SHA256 checksums, reproducible builds)
+- Atlas SDK: Rust cross-compilation toolchain, cargo-atlas targets, sysroots
+- Anvil build scripts: produces bootable ISO via standard tooling (xorriso, grub2, mtools)
 - KeironDocs: installation guide, hardening guide, package development guide, architecture docs
 
 **Phases:**
 - **Weeks 10–12:** Bootstrap repo + architecture doc + bare ISO skeleton (boots to shell in QEMU)
 - **Weeks 13–16:** Kernel core + VFS + memory management + process scheduler
 - **Weeks 17–20:** Networking stack + EDR hooks + hardened userspace
-- **Weeks 20–22:** KeironPkg package manager v1 + KeironDev SDK
+- **Weeks 20–22:** Loom package manager v1 + Atlas SDK
 - **Weeks 22–24:** First public ISO + CI/CD pipeline + documentation + security policy + release
 
 ---
 
-### Standalone Tools (Packages for Keiron Linux, Ships Separently)
+### Standalone Tools (Packages for Orin Labs, Ships Separently)
 
-These live in their own GitHub repos. Each is installable independently. Each ships in Keiron Linux by default.
+These live in their own GitHub repos. Each is installable independently. Each ships in Orin Labs by default.
 
 | Tool | Repo | Purpose | Lang |
 |------|------|---------|------|
-| **Keirox** | keirox-rs | Red-team proxy framework (HTTP/SOCKS5, TLS MITM, domain fronting) | Rust |
-| **Termino** | terminokeiron | Secure terminal mesh (Noise protocol, onion routing, gossip discovery) | Rust |
-| **SigMatrix** | sigmatrix-keiron | Detection rule engine (Sigma parser, YARA matching, correlation engine) | Rust |
-| **GhostPacket** | ghostpacket-keiron | Packet analysis toolkit (PCAP parsing, protocol dissectors, Zeek-log output) | Rust |
-| **MemoryHound** | memoryhound-keiron | Memory forensics framework (Windows dump parsing, process reconstruction) | Rust |
-| **RedOps** | redops-keiron | Adversary emulation engine (Atomic Red Team integration, campaign planning) | Rust |
+| **Drift** | drift-rs | Red-team proxy framework (HTTP/SOCKS5, TLS MITM, domain fronting) | Rust |
+| **Slate** | terminokeiron | Secure terminal mesh (Noise protocol, onion routing, gossip discovery) | Rust |
+| **Halo** | sigmatrix-orin | Detection rule engine (Sigma parser, YARA matching, correlation engine) | Rust |
+| **Trace** | ghostpacket-orin | Packet analysis toolkit (PCAP parsing, protocol dissectors, Zeek-log output) | Rust |
+| **Haven** | memoryhound-orin | Memory forensics framework (Windows dump parsing, process reconstruction) | Rust |
+| **Veil** | redops-orin | Adversary emulation engine (Atomic Red Team integration, campaign planning) | Rust |
 
-**Rule:** Each tool ships with: README, architecture doc, CONTRIBUTING.md, CI, tests (≥70% coverage), ≥1 crate on crates.io, ≥1 merged external PR before it ships in the Keiron Linux ISO. No tool enters the ISO without this baseline.
+**Rule:** Each tool ships with: README, architecture doc, CONTRIBUTING.md, CI, tests (≥70% coverage), ≥1 crate on crates.io, ≥1 merged external PR before it ships in the Orin Labs ISO. No tool enters the ISO without this baseline.
 
 ---
 
@@ -847,7 +847,7 @@ This is the difference between another abandoned hobby repo and a distro people 
 
 **1. Reproducible Builds**
 - Every ISO build is reproducible from source. Hash verified by contributors independently.
-- KeironPkg packages have SHA256 + GPG signature verification.
+- Loom packages have SHA256 + GPG signature verification.
 - Build scripts are versioned and tagged. Binary releases match source exactly.
 - NO pre-built binaries without source. No proprietary blobs.
 
@@ -883,7 +883,7 @@ This is the difference between another abandoned hobby repo and a distro people 
 
 **6. CI/CD Standards**
 - All repos: Rustfmt + clippy + cargo test + cargo audit on every PR
-- KeironPkg: integration tests for every package (install, upgrade, remove, rollback)
+- Loom: integration tests for every package (install, upgrade, remove, rollback)
 - KeironLinux: ISO build test on every PR (minimum: boots to login prompt)
 - No merges that break CI. No exceptions.
 - Branch protection on main: 1 reviewer minimum (self-review counts in solo phase)
@@ -891,7 +891,7 @@ This is the difference between another abandoned hobby repo and a distro people 
 **7. Documentation (All Of It)**
 - Installation guide (USB, VM, bare metal)
 - Hardening guide (CIS-level, step-by-step)
-- Package development guide (how to package for KeironPkg)
+- Package development guide (how to package for Loom)
 - Architecture overview (Mermaid diagrams for kernel, userspace, networking)
 - Contributing guide (fork → PR → review → merge → release)
 - Security policy (private disclosure, CVE process, patch timeline)
@@ -899,8 +899,8 @@ This is the difference between another abandoned hobby repo and a distro people 
 - FAQ (50 questions minimum before first release)
 
 **8. Community Infrastructure**
-- keironlinux.org (GitHub Pages, free tier sufficient)
-- keironlinux/keiron-devrels Matrix channel (public, bridged to Libera IRC #keironlinux)
+- orinlabs.dev (GitHub Pages, free tier sufficient)
+- orinlabs/keiron-devrels Matrix channel (public, bridged to Libera IRC #orinlabs)
 - Discord or Matrix forum for user discussions
 - GitHub Discussions enabled on every repo
 - Issue templates: bug report, feature request, security advisory, documentation
@@ -914,15 +914,15 @@ This is the difference between another abandoned hobby repo and a distro people 
 
 **10. Community Growth Rules (Adoption Strategy)**
 - First 5 merged PRs from external contributors (not you): required for graduation
-- At least 1 YouTube tutorial or blog post from someone outside your network using Keiron Linux
+- At least 1 YouTube tutorial or blog post from someone outside your network using Orin Labs
 - /r/linux, /r/cybersecurity, Lobsters, Hacker News posts (organic, not spam)
 - Submit to alternative distrowatch.com with demo
 - One post in r/ossdev or r/linux From Scratch about the build process
 - Release announcement with demo ISO link + screenshots + changelog
 
 **11. Versioned API Stability**
-- KeironPkg CLI: semver stable (no breaking changes without major version bump)
-- KeironDev SDK: documented, versioned, changes tracked in CHANGELOG.md
+- Loom CLI: semver stable (no breaking changes without major version bump)
+- Atlas SDK: documented, versioned, changes tracked in CHANGELOG.md
 - Kernel syscall interface: documented, changes noted in kernel docs
 
 **12. Immutable Audit Trail**
@@ -930,9 +930,9 @@ This is the difference between another abandoned hobby repo and a distro people 
 - Release notes: what changed, what was tested, known issues
 - No silent updates. Every patch has a reason.
 
-**Org:** Create `keironlinux` on GitHub. This is your distro. Own it, ship it, maintain it properly — unlike SnakeSec.
+**Org:** Create `orinlabs` on GitHub. This is your distro. Own it, ship it, maintain it properly — unlike SnakeSec.
 
-**Rule: This is not a throwaway.** SnakeSec built tools and stopped. Keiron Linux ships, maintains, and grows. Every tool has a maintainer (you initially), a CI pipeline, and a release process. No repo goes dormant for >30 days without a public "status update" issue. Dead repos get archived with a clear explanation.
+**Rule: This is not a throwaway.** SnakeSec built tools and stopped. Orin Labs ships, maintains, and grows. Every tool has a maintainer (you initially), a CI pipeline, and a release process. No repo goes dormant for >30 days without a public "status update" issue. Dead repos get archived with a clear explanation.
 
 ---
 
@@ -940,17 +940,17 @@ This is the difference between another abandoned hobby repo and a distro people 
 
 ```
 Weeks 1-2:   Vyrox MVP
-Weeks 3-4:   Vyrox polish + Keiron Linux planning (architecture doc + org setup)
+Weeks 3-4:   Vyrox polish + Orin Labs planning (architecture doc + org setup)
 Weeks 5-6:   Vyrox detection mesh
 Weeks 7-8:   Vyrox AI layer
-Weeks 9-10:  Keiron Linux bootstrap repo + Keirox standalone repo
-Weeks 11-12: Keiron Linux bootloader v1 + Termino standalone repo
-Weeks 13-14: Keiron Linux kernel basics + SigMatrix standalone repo
-Weeks 15-16: Keiron Linux VFS + GhostPacket standalone repo
-Weeks 17-18: Keiron Linux memory management + MemoryHound standalone repo
-Weeks 19-20: Keiron Linux networking stack + RedOps standalone repo
-Weeks 21-22: Keiron Linux EDR hooks + KeironPkg package manager v1
-Weeks 23-24: Keiron Linux first public ISO + CI/CD pipeline + community infra
+Weeks 9-10:  Orin Labs bootstrap repo + Drift standalone repo
+Weeks 11-12: Orin Labs bootloader v1 + Slate standalone repo
+Weeks 13-14: Orin Labs kernel basics + Halo standalone repo
+Weeks 15-16: Orin Labs VFS + Trace standalone repo
+Weeks 17-18: Orin Labs memory management + Haven standalone repo
+Weeks 19-20: Orin Labs networking stack + Veil standalone repo
+Weeks 21-22: Orin Labs EDR hooks + Loom package manager v1
+Weeks 23-24: Orin Labs first public ISO + CI/CD pipeline + community infra
 ```
 
 Each project: 4–10 weeks, not 2 weeks. Realistic. Build one while learning the skills for the next.
@@ -980,18 +980,18 @@ Each project: 4–10 weeks, not 2 weeks. Realistic. Build one while learning the
 
 ##  24-Week Graduation Criteria
 
-- [ ] 15+ OSS PRs opened across 4+ organizations (Vyrox, Keiron Linux, Keirox + others)
+- [ ] 15+ OSS PRs opened across 4+ organizations (Vyrox, Orin Labs, Drift + others)
 - [ ] 3+ PRs merged into Vyrox Security
-- [ ] 2+ PRs merged into Keiron Linux
-- [ ] 2+ PRs merged into standalone tools (Keirox, Termino, SigMatrix, GhostPacket, MemoryHound, RedOps)
+- [ ] 2+ PRs merged into Orin Labs
+- [ ] 2+ PRs merged into standalone tools (Drift, Slate, Halo, Trace, Haven, Veil)
 - [ ] 5+ external contributors merged across all projects (community growth baseline)
 - [ ] Vyrox CONTRIBUTING.md authored and maintained
-- [ ] Keiron Linux CONTRIBUTING.md, architecture doc, ISO build guide, hardening guide authored
+- [ ] Orin Labs CONTRIBUTING.md, architecture doc, ISO build guide, hardening guide authored
 - [ ] All 6 standalone tools: ≥1 merged external PR each, ≥1 crate published to crates.io
-- [ ] Keiron Linux: public ISO released (keironlinux.org), reproducible builds verified
-- [ ] KeironPkg: functional package manager, signed packages
-- [ ] KeironDev SDK: published with documentation
-- [ ] At least 1 YouTube/blog post from external user using Keiron Linux or any standalone tool
+- [ ] Orin Labs: public ISO released (orinlabs.dev), reproducible builds verified
+- [ ] Loom: functional package manager, signed packages
+- [ ] Atlas SDK: published with documentation
+- [ ] At least 1 YouTube/blog post from external user using Orin Labs or any standalone tool
 - [ ] 24 blog posts published
 - [ ] 24 journal entries written
 - [ ] ATT&CK navigator layers for all 10 case studies

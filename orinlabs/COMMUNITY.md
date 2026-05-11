@@ -1,4 +1,4 @@
-# Keiron Linux — Community Infrastructure
+# Orin Labs — Community Infrastructure
 
 > *"A community is infrastructure. Build it like you build the OS."*
 
@@ -20,35 +20,35 @@
 
 ### Real-Time: Matrix + IRC
 
-**Matrix:** `#keironlinux:libera.chat`
-**IRC:** `irc.libera.chat/#keironlinux` (bridged to Matrix)
+**Matrix:** `#orinlabs:libera.chat`
+**IRC:** `irc.libera.chat/#orinlabs` (bridged to Matrix)
 
 **Channel structure:**
 
 | Channel | Purpose | Moderated? |
 |---------|---------|-----------|
-| `#keironlinux:libera.chat` | General chat, support | Yes |
-| `#keironlinux-dev:libera.chat` | Development discussion | Yes |
-| `#keironlinux-offtopic:libera.chat` | Off-topic chat | Yes |
-| `#keironlinux-announce:libera.chat` | Release announcements | No (read-only for most) |
+| `#orinlabs:libera.chat` | General chat, support | Yes |
+| `#orinlabs-dev:libera.chat` | Development discussion | Yes |
+| `#orinlabs-offtopic:libera.chat` | Off-topic chat | Yes |
+| `#orinlabs-announce:libera.chat` | Release announcements | No (read-only for most) |
 
 **Moderation rules:**
 1. Be respectful. No harassment, no discrimination.
 2. Stay on topic in each channel.
 3. No spam, no advertising.
-4. Security disclosures go to security@keironlinux.dev, not the public channel.
+4. Security disclosures go to security@orinlabs.dev, not the public channel.
 5. English only in main channels.
 
 **Moderators:** Keiron (owner) + 2 recruited community moderators after Month 3.
 
-### Website: keironlinux.org
+### Website: orinlabs.dev
 
 Built with Jekyll, hosted on GitHub Pages.
 
 **Structure:**
 
 ```
-keironlinux.org/
+orinlabs.dev/
 ├── index.html         ← Landing page (brief, screenshot, download link)
 ├── download/          ← ISO download + checksums + signatures
 ├── docs/              ← Documentation (mkdocs-material)
@@ -89,7 +89,7 @@ labels: bug
 [What actually happened]
 
 ## Environment
-- Keiron Linux version:
+- Orin Labs version:
 - Hardware (if applicable):
 - Installation method (ISO/live/installed):
 
@@ -136,13 +136,13 @@ about: Report a security vulnerability (PRIVATE — DO NOT post publicly)
 labels: security
 ---
 
-**STOP:** If this is an active exploit, do not file a GitHub issue. Email security@keironlinux.dev directly.
+**STOP:** If this is an active exploit, do not file a GitHub issue. Email security@orinlabs.dev directly.
 
 ## Vulnerability Type
 [e.g., buffer overflow, privilege escalation, information disclosure]
 
 ## Affected Component
-[kernel/bootloader/tool name]
+[Vale/bootloader/tool name]
 
 ## Severity
 [Critical/High/Medium/Low — with justification]
@@ -220,7 +220,7 @@ We as members, contributors, and leaders pledge to make participation in our com
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to:
 - **Public:** Open a GitHub issue with label `conduct`
-- **Private:** Email keiron@keironlinux.dev
+- **Private:** Email keiron@orinlabs.dev
 
 All complaints will be reviewed and investigated. The maintainer team will respond in a way that is deemed necessary and appropriate to the circumstances.
 
@@ -282,12 +282,12 @@ Thank you to the following contributors who merged PRs in v1.2.0:
 
 Bi-monthly blog post featuring 1–2 external contributors:
 - What they contributed
-- Why they chose Keiron Linux
+- Why they chose Orin Labs
 - What they're working on next
 
 ### Hall of Fame
 
-A permanent page on keironlinux.org listing every contributor who has had ≥3 PRs merged, organized by year.
+A permanent page on orinlabs.dev listing every contributor who has had ≥3 PRs merged, organized by year.
 
 ---
 
@@ -302,7 +302,7 @@ A permanent page on keironlinux.org listing every contributor who has had ≥3 P
 ### Professional Support (Future, Year 2+)
 
 If there's demand, a paid support tier may be offered via:
-- keiron@keironlinux.dev
+- keiron@orinlabs.dev
 - Response within 24h, 5-day SLA
 
 **Rule:** Free community support never gets deprioritized for paid support. Paid is for enterprise SLA guarantees.
@@ -341,7 +341,7 @@ For significant changes:
 
 ### Private Disclosure
 
-Email: security@keironlinux.dev
+Email: security@orinlabs.dev
 
 Response time:
 - Critical: 24h acknowledgment, 7-day fix or disclosure
@@ -354,12 +354,12 @@ Response time:
 After the fix is released, a security advisory is posted on GitHub:
 - `.github/SECURITY.md` links to this process
 - GitHub Security Advisories (GHSAs) used for CVEs
-- Advisories emailed to security@lists.keironlinux.dev subscribers
+- Advisories emailed to security@lists.orinlabs.dev subscribers
 
 ### CVE Coordination
 
-- Keiron Linux CVEs are filed with MITRE via GitHub's CVE request process
-- Format: `KL-YYYY-XXXX` (Keiron Linux, year, number)
+- Orin Labs CVEs are filed with MITRE via GitHub's CVE request process
+- Format: `KL-YYYY-XXXX` (Orin Labs, year, number)
 - Example: `KL-2026-0001`
 
 ---
@@ -384,14 +384,14 @@ Track community health monthly:
 ### Weekly Dev Sync (Optional, Matrix)
 
 - When: Every Friday 18:00 UTC (drop-in, not mandatory)
-- Where: `#keironlinux-dev:libera.chat`
+- Where: `#orinlabs-dev:libera.chat`
 - Format: What shipped this week, what's blocked, what's next
 - Not recorded. No minutes. Low-commitment.
 
 ### Monthly Community Call (Future, Month 6+)
 
 - When: First Thursday of each month, 19:00 UTC
-- Where: Jitsi (link posted in `#keironlinux:libera.chat` one week before)
+- Where: Jitsi (link posted in `#orinlabs:libera.chat` one week before)
 - Format: 30min: Owner update (10min) + Q&A (20min)
 - Recorded and posted to YouTube (unlisted)
 

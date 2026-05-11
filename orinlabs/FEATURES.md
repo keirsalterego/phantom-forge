@@ -1,4 +1,4 @@
-# Keiron Linux — Feature Roadmap
+# Orin Labs — Feature Roadmap
 
 > *"We ship features when they're ready. Not before."*
 
@@ -10,36 +10,36 @@
 
 ### Repos Created
 
-- `keironlinux/os` — main distro repo, ISO build skeleton
-- `keironlinux/kernel` — kernel skeleton with QEMU boot test
-- `keironlinux/bootloader` — UEFI stage 1 + stage 2 skeleton
-- `keironlinux/keiron-docs` — documentation hub
-- `keirox-keiron` — first standalone tool repo
-- `keironlinux/community` — issue templates, PR templates, Matrix channel
+- `orinlabs/os` — main distro repo, ISO build skeleton
+- `orinlabs/Vale` — Vale skeleton with QEMU boot test
+- `orinlabs/bootloader` — UEFI stage 1 + stage 2 skeleton
+- `orinlabs/keiron-docs` — documentation hub
+- `drift-keiron` — first standalone tool repo
+- `orinlabs/community` — issue templates, PR templates, Matrix channel
 
 ### Features
 
-- [ ] GitHub org `keironlinux` created
+- [ ] GitHub org `orinlabs` created
 - [ ] All 16 repos initialized (empty, documented)
 - [ ] README.md on every repo with purpose and status
-- [ ] GitHub Actions CI on kernel repo (QEMU boot test)
-- [ ] keironlinux.org website (single page: "Coming Soon")
-- [ ] Matrix channel: `#keironlinux:libera.chat`
+- [ ] GitHub Actions CI on Vale repo (QEMU boot test)
+- [ ] orinlabs.dev website (single page: "Coming Soon")
+- [ ] Matrix channel: `#orinlabs:libera.chat`
 - [ ] GPG key generated for signing releases
-- [ ] Keirox repo scaffolded with Cargo + tests + CI
+- [ ] Drift repo scaffolded with Cargo + tests + CI
 
 ---
 
 ## Phase 1 — Kernel Core (Weeks 11–14)
 
-**Goal:** The kernel boots. To a shell. In QEMU. That is the only goal.
+**Goal:** The Vale boots. To a shell. In QEMU. That is the only goal.
 
 ### Week 11 — Bootloader
 
 - [ ] Stage 1: UEFI application, parses FAT32 ESP, loads stage 2
 - [ ] Stage 2: x86_64 long mode switch, page tables setup
 - [ ] GRUB2 integration (optional, for dual-boot scenarios)
-- [ ] QEMU boot test in CI (boots to kernel panic with "waiting for VFS")
+- [ ] QEMU boot test in CI (boots to Vale panic with "waiting for VFS")
 - [ ] UEFI firmware test (OVMF in QEMU)
 
 ### Week 12 — Memory + IDT
@@ -65,11 +65,11 @@
 
 - [ ] Userland skeleton (musl-based, busybox)
 - [ ] runit init system setup
-- [ ] keironiso build scripts functional
+- [ ] anvil build scripts functional
 - [ ] ISO boots to shell in QEMU
 - [ ] ISO boots on real hardware (test laptop #1)
 - [ ] Nightly ISO CI pipeline working
-- [ ] **Milestone: Keiron Linux v0.1.0-alpha.1 released**
+- [ ] **Milestone: Orin Labs v0.1.0-alpha.1 released**
 
 ---
 
@@ -103,16 +103,16 @@
 - [ ] Ring buffer event log (safe Rust, no allocation in ISR)
 - [ ] Event export format (JSON over Unix socket)
 
-### Week 18 — KeironPkg v1
+### Week 18 — Loom v1
 
 - [ ] Package format definition (.kpkg)
 - [ ] Package index (signed, SHA256)
-- [ ] `keironpkg install` — download, verify, extract
-- [ ] `keironpkg update` — refresh index
-- [ ] `keironpkg search` — query index
-- [ ] `keironpkg verify` — check GPG signature
+- [ ] `loom install` — download, verify, extract
+- [ ] `loom update` — refresh index
+- [ ] `loom search` — query index
+- [ ] `loom verify` — check GPG signature
 - [ ] First 10 packages: bash, openssh, nmap, wireshark-cli, strace, gdb, vim, curl, wget, tcpdump
-- [ ] **Milestone: KeironPkg functional, 10 packages available**
+- [ ] **Milestone: Loom functional, 10 packages available**
 
 ---
 
@@ -120,7 +120,7 @@
 
 **Goal:** All 6 standalone tools ship. Security hardening is complete.
 
-### Week 19 — Keirox v1
+### Week 19 — Drift v1
 
 - [ ] HTTP proxy (CONNECT method, MITM support)
 - [ ] SOCKS5 proxy
@@ -128,47 +128,47 @@
 - [ ] TLS inspection (self-signed CA, user-installed)
 - [ ] Connection logging (JSON)
 - [ ] Published to crates.io
-- [ ] **Milestone: Keirox v1.0.0 on crates.io + in ISO**
+- [ ] **Milestone: Drift v1.0.0 on crates.io + in ISO**
 
-### Week 20 — Termino + SigMatrix
+### Week 20 — Slate + Halo
 
-**Termino:**
+**Slate:**
 - [ ] Noise protocol handshake
 - [ ] Onion routing (2-hop initially)
 - [ ] Peer discovery (gossip protocol)
 - [ ] Encrypted dead-drops
 - [ ] Published to crates.io
 
-**SigMatrix:**
+**Halo:**
 - [ ] Sigma rule parser (YAML → AST)
 - [ ] Backend: Splunk SPL, Elastic EQL, plain regex
 - [ ] YARA-style pattern matching
 - [ ] Event correlation engine
 - [ ] Published to crates.io
 
-- [ ] **Milestone: Termino + SigMatrix v1.0.0 on crates.io + in ISO**
+- [ ] **Milestone: Slate + Halo v1.0.0 on crates.io + in ISO**
 
-### Week 21 — GhostPacket + MemoryHound
+### Week 21 — Trace + Haven
 
-**GhostPacket:**
+**Trace:**
 - [ ] PCAP/PCAPNG parsing (pcap crate)
 - [ ] TCP/UDP/HTTP/TLS/DNS dissectors
 - [ ] Anomaly detection (threshold-based)
 - [ ] Zeek-style log output (JSON)
 - [ ] Published to crates.io
 
-**MemoryHound:**
+**Haven:**
 - [ ] Windows memory dump parsing (raw, hibernation)
 - [ ] Process reconstruction
 - [ ] Malicious artifact detection (YARA integration)
 - [ ] Plugin architecture (load .so / .dyl)
 - [ ] Published to crates.io
 
-- [ ] **Milestone: GhostPacket + MemoryHound v1.0.0 on crates.io + in ISO**
+- [ ] **Milestone: Trace + Haven v1.0.0 on crates.io + in ISO**
 
-### Week 22 — RedOps + Hardening
+### Week 22 — Veil + Hardening
 
-**RedOps:**
+**Veil:**
 - [ ] Atomic Red Team YAML integration
 - [ ] Attack planning (sequence executor)
 - [ ] Campaign reporting (JSON + HTML)
@@ -176,16 +176,16 @@
 - [ ] Published to crates.io
 
 **Security Hardening:**
-- [ ] KASLR enabled (kernel base randomized)
+- [ ] KASLR enabled (Vale base randomized)
 - [ ] SMEP + SMAP enabled
 - [ ] W^X enforcement (no writable code pages)
 - [ ] AppArmor profiles on all daemons
 - [ ] Kernel lockdown module
 - [ ] kptr_restrict enabled
-- [ ] UEFI Secure Boot (signed GRUB + kernel)
+- [ ] UEFI Secure Boot (signed GRUB + Vale)
 - [ ] Audit daemon (auditd) running
 
-- [ ] **Milestone: All 6 tools v1.0.0 shipped. Keiron Linux v0.2.0-beta**
+- [ ] **Milestone: All 6 tools v1.0.0 shipped. Orin Labs v0.2.0-beta**
 
 ---
 
@@ -193,12 +193,12 @@
 
 **Goal:** Make it easy to use, easy to contribute, easy to trust.
 
-### Week 23 — KeironDev SDK
+### Week 23 — Atlas SDK
 
-- [ ] cargo-keiron target (x86_64-keiron-linux-gnu)
+- [ ] cargo-atlas target (x86_64-keiron-linux-gnu)
 - [ ] Sysroot generation (musl-based)
 - [ ] Cross-compilation guide (i686, aarch64)
-- [ ] SDK documentation (ARCHITECTURE.md in keirondev repo)
+- [ ] SDK documentation (ARCHITECTURE.md in atlas repo)
 - [ ] First external package: python3 (via musl cross-compile)
 
 ### Week 24 — Documentation + First Public Release
@@ -206,7 +206,7 @@
 **Documentation (keiron-docs repo):**
 - [ ] Installation guide (USB, VM, bare metal)
 - [ ] Hardening guide (CIS-level step-by-step)
-- [ ] Package development guide (how to package for KeironPkg)
+- [ ] Package development guide (how to package for Loom)
 - [ ] Architecture overview (Mermaid diagrams)
 - [ ] Contributing guide
 - [ ] Security policy
@@ -214,7 +214,7 @@
 - [ ] FAQ (50 questions)
 
 **Community:**
-- [ ] keironlinux.org fully functional (website, blog, docs)
+- [ ] orinlabs.dev fully functional (website, blog, docs)
 - [ ] Alternative distrowatch.com submission
 - [ ] Hacker News "Show HN" post
 - [ ] /r/linux post (organic)
@@ -228,7 +228,7 @@
 - [ ] GPG signature published
 - [ ] Release notes written
 
-- [ ] **Milestone: Keiron Linux v1.0.0 — First Public Release**
+- [ ] **Milestone: Orin Labs v1.0.0 — First Public Release**
 - [ ] **Milestone: 5+ external contributors merged across all repos**
 
 ---
@@ -239,11 +239,11 @@ After v1.0.0, the cadence shifts:
 
 ### Monthly (every 4 weeks)
 - Patch releases (bug fixes, security fixes)
-- New packages in KeironPkg index
+- New packages in Loom index
 - CI improvements
 
 ### Every 6 months
-- Minor release (new kernel features, new tools, updated packages)
+- Minor release (new Vale features, new tools, updated packages)
 - Kernel bump (new Rust nightly + updated dependencies)
 - Release notes with full changelog
 
@@ -266,8 +266,8 @@ These are not blocking v1.0.0. They ship when they're ready.
 | aarch64 support | High | Medium | Raspberry Pi 4, Apple Silicon |
 | ZFS driver | Medium | High | For users wanting ZFS root |
 | Secure boot chain (tianocore) | Medium | High | Full UEFI secure boot |
-| Python 3 in KeironPkg | High | Low | Via musl cross-compile |
-| Container support (runc) | Low | High | After kernel is stable |
+| Python 3 in Loom | High | Low | Via musl cross-compile |
+| Container support (runc) | Low | High | After Vale is stable |
 | Full-disk encryption (LUKS) | Medium | High | dm-crypt integration |
 | Wireless support (iwlwifi, rtw88) | Medium | High | WiFi in live ISO |
 | Haskell/Golang toolchain | Low | Medium | For advanced users |

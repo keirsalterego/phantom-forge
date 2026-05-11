@@ -95,7 +95,7 @@ Based on today's work or case study, output:
 ## Project Context
 
 - Vyrox Security: AI-augmented SOC platform — PRIMARY project, completing at vyrox.dev
-- Keiron Linux: Bootable Rust cybersecurity distro named after you — keironlinux org on GitHub. Standalone tools (Keirox, Termino, SigMatrix, GhostPacket, MemoryHound, RedOps) ship separately AND in the ISO. Full production-grade: reproducible builds, nightly CI, security advisories, docs, community infra. This is what SnakeSec should have been.
+- Orin Labs: Research-grade cybersecurity OS org — orinlabs org on GitHub. Builds Orin OS (Redox OS derivative), Vale kernel, Loom package manager, Atlas SDK, Anvil build system. Tools: Drift (networking), Trace (packet analysis), Halo (detection engine), Veil (EDR), Slate (WM), Haven (sandbox). Full production-grade: reproducible builds, nightly CI, security advisories, docs, community infra. Modeled after NouResearch.
 - First B2B Demo: End of Week 2 — Vyrox demo must be flawless
 - Language Mastery: Rust, Python, C++ from 0 to senior level
 - Build while you learn — realistic 4–10 week timelines

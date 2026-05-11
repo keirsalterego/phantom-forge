@@ -1,14 +1,14 @@
-# Keiron Linux — Organization Structure
+# Orin Labs — Organization Structure
 
 > *"A great project needs a great structure. A great structure needs great maintainers."*
 
 ---
 
-## GitHub Organization: `keironlinux`
+## GitHub Organization: `orinlabs`
 
-All repos live under https://github.com/keironlinux
+All repos live under https://github.com/orinlabs
 
-**Naming convention:** `keironlinux/<repo>` for the distro core. `<tool>-keiron` for standalone tools (e.g., `keirox-keiron`).
+**Naming convention:** `orinlabs/<repo>` for the distro core. `<tool>-keiron` for standalone tools (e.g., `drift-keiron`).
 
 ---
 
@@ -18,19 +18,19 @@ All repos live under https://github.com/keironlinux
 
 | Repo | Purpose | Language | CI Required |
 |------|---------|----------|-------------|
-| `keironlinux/os` | Main distro repo — ISO builds, build scripts, package index | Shell + Rust | ✅ QEMU boot test |
-| `keironlinux/kernel` | Rust kernel (no_std, memory-safe) | Rust | ✅ QEMU boot test |
-| `keironlinux/bootloader` | Stage 1 + Stage 2 UEFI bootloader | Rust | ✅ UEFI test |
-| `keironlinux/keironpkg` | Package manager (Rust CLI) | Rust | ✅ integration tests |
-| `keironlinux/keirondev` | SDK: cross-compilation toolchain, cargo targets | Rust | ✅ test sysroot |
-| `keironlinux/keironiso` | ISO build automation scripts | Shell + Rust | ✅ ISO smoke test |
-| `keironlinux/keiron-docs` | Documentation hub (architecture, guides) | Markdown | ✅ link check |
+| `orinlabs/os` | Main distro repo — ISO builds, build scripts, package index | Shell + Rust | ✅ QEMU boot test |
+| `orinlabs/Vale` | Rust Vale (no_std, memory-safe) | Rust | ✅ QEMU boot test |
+| `orinlabs/bootloader` | Stage 1 + Stage 2 UEFI bootloader | Rust | ✅ UEFI test |
+| `orinlabs/loom` | Package manager (Rust CLI) | Rust | ✅ integration tests |
+| `orinlabs/atlas` | SDK: cross-compilation toolchain, cargo targets | Rust | ✅ test sysroot |
+| `orinlabs/anvil` | ISO build automation scripts | Shell + Rust | ✅ ISO smoke test |
+| `orinlabs/keiron-docs` | Documentation hub (architecture, guides) | Markdown | ✅ link check |
 
 ### Standalone Tool Repositories (6 repos)
 
 | Repo | Purpose | crates.io | ISO Default? |
 |------|---------|-----------|-------------|
-| `keirox-keiron` | Red-team proxy framework | ✅ | ✅ |
+| `drift-keiron` | Red-team proxy framework | ✅ | ✅ |
 | `termino-keiron` | Secure terminal mesh | ✅ | ✅ |
 | `sigmatrix-keiron` | Detection rule engine | ✅ | ✅ |
 | `ghostpacket-keiron` | Packet analysis toolkit | ✅ | ✅ |
@@ -41,28 +41,28 @@ All repos live under https://github.com/keironlinux
 
 | Repo | Purpose |
 |------|---------|
-| `keironlinux/website` | keironlinux.org (GitHub Pages, Jekyll) |
-| `keironlinux/community` | Matrix/Discord bridge config, issue templates, PR templates |
-| `keironlinux/security` | Security advisories, CVE coordination, GPG keys |
+| `orinlabs/website` | orinlabs.dev (GitHub Pages, Jekyll) |
+| `orinlabs/community` | Matrix/Discord bridge config, issue templates, PR templates |
+| `orinlabs/security` | Security advisories, CVE coordination, GPG keys |
 
 ---
 
 ## Total: 16 Repositories
 
 ```
-keironlinux/
+orinlabs/
 ├── os/                  ← Main distro repo (ISO builds here)
-├── kernel/              ← Rust kernel
+├── Vale/              ← Rust Vale
 ├── bootloader/          ← UEFI bootloader
-├── keironpkg/           ← Package manager
-├── keirondev/           ← SDK + toolchain
-├── keironiso/           ← Build automation
+├── loom/           ← Package manager
+├── atlas/           ← SDK + toolchain
+├── anvil/           ← Build automation
 ├── keiron-docs/         ← All documentation
 ├── website/             ← Public website
 ├── community/           ← Templates + infra
 └── security/            ← Security advisories
 
-keirox-keiron/           ← Standalone tool
+drift-keiron/           ← Standalone tool
 termino-keiron/          ← Standalone tool
 sigmatrix-keiron/        ← Standalone tool
 ghostpacket-keiron/      ← Standalone tool
@@ -82,7 +82,7 @@ redops-keiron/           ← Standalone tool
 | Role | Responsibility | Count |
 |------|--------------|-------|
 | **Owner** | All repos. Can merge to any branch. | 1 (Keiron) |
-| **Core Maintainer** | keironlinux/os, kernel, bootloader. Can merge without owner review. | 3 (recruit after Month 3) |
+| **Core Maintainer** | orinlabs/os, Vale, bootloader. Can merge without owner review. | 3 (recruit after Month 3) |
 | **Tool Maintainer** | Own one standalone tool repo. Review PRs, cut releases. | 6 (recruit after Month 4) |
 | **Docs Maintainer** | keiron-docs + website. Review docs PRs. | 1 (recruit after Month 3) |
 | **Contributor** | Anyone who opens a PR. No merge rights until promoted. | Unlimited |
@@ -92,7 +92,7 @@ redops-keiron/           ← Standalone tool
 ```
 Contributor (opened PR) → Trusted Contributor (2+ merged PRs) →
 Tool Maintainer (1+ tool at MVP, 3+ merged external PRs) →
-Core Maintainer (kernel or os at MVP, mentored 1+ new contributor)
+Core Maintainer (Vale or os at MVP, mentored 1+ new contributor)
 ```
 
 ### Dormancy Rules
@@ -105,7 +105,7 @@ Core Maintainer (kernel or os at MVP, mentored 1+ new contributor)
 
 ## Branch Strategy
 
-### Core Repos (os, kernel, bootloader)
+### Core Repos (os, Vale, bootloader)
 
 ```
 main          — development (can force-push for rewrites)
@@ -134,8 +134,8 @@ vX.Y.Z        — crates.io releases (tags only)
 
 ### Semantic Versioning
 
-- **MAJOR:** Breaking changes to kernel ABI, syscall interface, or KeironPkg CLI
-- **MINOR:** New features, new packages, kernel improvements (every 6 months)
+- **MAJOR:** Breaking changes to Vale ABI, syscall interface, or Loom CLI
+- **MINOR:** New features, new packages, Vale improvements (every 6 months)
 - **PATCH:** Bug fixes, security patches (every 4 weeks)
 
 ### Release Cadence
@@ -143,7 +143,7 @@ vX.Y.Z        — crates.io releases (tags only)
 | Type | Frequency | Trigger |
 |------|-----------|---------|
 | **Patch** | Every 4 weeks | Security fixes, bug fixes |
-| **Minor** | Every 6 months | New features, kernel bump, new tools |
+| **Minor** | Every 6 months | New features, Vale bump, new tools |
 | **Major** | Yearly | Large architectural changes |
 
 ### Lifecycle Policy
@@ -165,11 +165,11 @@ vX.Y.Z        — crates.io releases (tags only)
 | Channel | Purpose | Access |
 |---------|---------|--------|
 | GitHub Discussions | All repos | Public |
-| Matrix: `#keironlinux:libera.chat` | Real-time chat | Public |
-| Libera IRC: `#keironlinux` | IRC bridge | Public |
+| Matrix: `#orinlabs:libera.chat` | Real-time chat | Public |
+| Libera IRC: `#orinlabs` | IRC bridge | Public |
 | GitHub Issues | Bug reports, feature requests | Public |
-| security@keironlinux.dev | Private security disclosures | Private |
-| blog.keironlinux.org | Release notes, tutorials | Public |
+| security@orinlabs.dev | Private security disclosures | Private |
+| blog.orinlabs.dev | Release notes, tutorials | Public |
 
 ---
 
@@ -238,18 +238,18 @@ All builds run in a Docker container with locked versions. Contributors can repr
 ## Dependency Between Repos
 
 ```
-bootloader → kernel → os
+bootloader → Vale → os
                         ↓
-              keironiso (builds the ISO)
-              keironpkg (packages tools)
-              keirondev (cross-compiler)
+              anvil (builds the ISO)
+              loom (packages tools)
+              atlas (cross-compiler)
 
-keirox-keiron → standalone, used by kernel/networking
-termino-keiron → standalone, used by os/keironpkg
-sigmatrix-keiron → standalone, used by os/keironpkg
-ghostpacket-keiron → standalone, used by os/keironpkg
-memoryhound-keiron → standalone, used by os/keironpkg
-redops-keiron → standalone, used by os/keironpkg
+drift-keiron → standalone, used by Vale/networking
+termino-keiron → standalone, used by os/loom
+sigmatrix-keiron → standalone, used by os/loom
+ghostpacket-keiron → standalone, used by os/loom
+memoryhound-keiron → standalone, used by os/loom
+redops-keiron → standalone, used by os/loom
 ```
 
 ---

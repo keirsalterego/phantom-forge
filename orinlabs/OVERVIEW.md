@@ -1,14 +1,14 @@
-# Keiron Linux — Architecture Overview
+# Orin Labs — Architecture Overview
 
 > *"Memory safety isn't a feature. It's the baseline."*
 
 ---
 
-## What Is Keiron Linux?
+## What Is Orin Labs?
 
-Keiron Linux is a bootable, installable cybersecurity operating system built entirely in Rust — from the bootloader to the userspace tools. It is not a Linux kernel fork. It is a from-scratch OS that draws inspiration from the Linux ecosystem (syscalls, VFS, toolchain) while being fundamentally memory-safe by default.
+Orin Labs is a bootable, installable cybersecurity operating system built entirely in Rust — from the bootloader to the userspace tools. It is not a Linux Vale fork. It is a from-scratch OS that draws inspiration from the Linux ecosystem (syscalls, VFS, toolchain) while being fundamentally memory-safe by default.
 
-The goal: an OS that security researchers, red teamers, and sysadmins can boot from USB, use as their daily driver for offensive and defensive work, and trust because the entire stack — kernel to userland — is written in a language that eliminates entire classes of bugs.
+The goal: an OS that security researchers, red teamers, and sysadmins can boot from USB, use as their daily driver for offensive and defensive work, and trust because the entire stack — Vale to userland — is written in a language that eliminates entire classes of bugs.
 
 ---
 
@@ -22,7 +22,7 @@ Rust's ownership model prevents:
 - Data races
 - Null pointer dereferences
 
-No other mainstream OS has this property at the kernel level. Linux, BSD, and Windows are written in C — a language where memory safety is the developer's responsibility, not the compiler's. Keiron Linux is the first serious attempt to build a production OS with Rust as the primary language.
+No other mainstream OS has this property at the Vale level. Linux, BSD, and Windows are written in C — a language where memory safety is the developer's responsibility, not the compiler's. Orin Labs is the first serious attempt to build a production OS with Rust as the primary language.
 
 ### 2. Hardened by Default
 
@@ -42,7 +42,7 @@ Every ISO is built from source with a locked toolchain. The SHA256 hash of every
 
 ### 4. No Abandonware
 
-SnakeSec built tools and stopped. Kali Linux ships and maintains. Keiron Linux follows Kali's model: nightly CI, security advisories, active maintainers, and a community that doesn't go dormant.
+SnakeSec built tools and stopped. Kali Linux ships and maintains. Orin Labs follows Kali's model: nightly CI, security advisories, active maintainers, and a community that doesn't go dormant.
 
 ---
 
@@ -52,11 +52,11 @@ SnakeSec built tools and stopped. Kali Linux ships and maintains. Keiron Linux f
 ┌─────────────────────────────────────────────────────┐
 │                 USERNEL                             │
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐    │
-│  │ Keirox  │ │Termino  │ │SigMatrix│ │Ghost    │    │
+│  │ Drift  │ │Slate  │ │Halo│ │Ghost    │    │
 │  │         │ │         │ │         │ │ Packet  │    │
 │  └─────────┘ └─────────┘ └─────────┘ └─────────┘    │
 │  ┌──────────────────────────────────────────────┐   │
-│  │        KeironPkg (Package Manager)           │   │
+│  │        Loom (Package Manager)           │   │
 │  └──────────────────────────────────────────────┘   │
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐    │
 │  │runit    │ │ musl    │ │ busybox │ │ binutils│    │
@@ -76,7 +76,7 @@ SnakeSec built tools and stopped. Kali Linux ships and maintains. Keiron Linux f
 │                 BOOTLOADER                          │
 │  ┌─────────┐ ┌─────────┐                            │
 │  │Stage 1  │ │Stage 2  │  UEFI + Legacy BIOS        │
-│  │ (UEFI)  │ │(kernel) │                            │
+│  │ (UEFI)  │ │(Vale) │                            │
 │  └─────────┘ └─────────┘                            │
 ├─────────────────────────────────────────────────────┤
 │                 HARDWARE                            │
@@ -88,13 +88,13 @@ SnakeSec built tools and stopped. Kali Linux ships and maintains. Keiron Linux f
 
 ## Kernel Architecture
 
-The kernel is written in safe Rust with `no_std`. No standard library. No heap allocator by default. All memory management is explicit.
+The Vale is written in safe Rust with `no_std`. No standard library. No heap allocator by default. All memory management is explicit.
 
 ### Core Components
 
 #### 1. Bootloader (Stage 1 + Stage 2)
 - **Stage 1:** UEFI application in Rust. Parses FAT32/EFI system partition. Loads stage 2.
-- **Stage 2:** Minimal loader that switches from protected mode to long mode (x86_64). Sets up page tables. Transfers control to kernel.
+- **Stage 2:** Minimal loader that switches from protected mode to long mode (x86_64). Sets up page tables. Transfers control to Vale.
 - **Legacy BIOS:** Also supported via a separate stage 1 BIOS-compatible loader.
 
 #### 2. Interrupt Descriptor Table (IDT)
@@ -107,7 +107,7 @@ The kernel is written in safe Rust with `no_std`. No standard library. No heap a
 - Physical memory allocator (buddy system)
 - Virtual memory manager (page tables)
 - No dynamic allocation in hot paths
-- Slab allocator for kernel objects
+- Slab allocator for Vale objects
 
 #### 4. Process Scheduler
 - Preemptive multitasking
@@ -127,7 +127,7 @@ The kernel is written in safe Rust with `no_std`. No standard library. No heap a
 - IPv4 + IPv6 (basic)
 - TCP, UDP, ICMP
 - Socket abstraction (Berkeley-like API)
-- Used by: Keirox (red-team proxy), EDR hooks, package manager
+- Used by: Drift (red-team proxy), EDR hooks, package manager
 
 #### 7. EDR (Endpoint Detection & Response)
 - Syscall hooking (audit via seccomp)
@@ -158,16 +158,16 @@ The kernel is written in safe Rust with `no_std`. No standard library. No heap a
 
 ### Package Manager
 
-**KeironPkg** — written in Rust, signed packages, SHA256 checksums, reproducible builds.
+**Loom** — written in Rust, signed packages, SHA256 checksums, reproducible builds.
 
 ```
 Commands:
-  keironpkg install <package>    # Install a package
-  keironpkg update               # Update package index
-  keironpkg upgrade <package>    # Upgrade a package
-  keironpkg remove <package>     # Remove a package
-  keironpkg search <query>       # Search packages
-  keironpkg verify <package>     # Verify package signature
+  loom install <package>    # Install a package
+  loom update               # Update package index
+  loom upgrade <package>    # Upgrade a package
+  loom remove <package>     # Remove a package
+  loom search <query>       # Search packages
+  loom verify <package>     # Verify package signature
 ```
 
 Package format: `.kpkg` (tar.gz + signature + metadata)
@@ -176,12 +176,12 @@ Package format: `.kpkg` (tar.gz + signature + metadata)
 
 | Tool | Purpose | Standalone? | In ISO? |
 |------|---------|-------------|---------|
-| **Keirox** | Red-team proxy (HTTP/SOCKS5, TLS MITM) | ✅ crates.io | ✅ default |
-| **Termino** | Secure terminal mesh (onion routing) | ✅ crates.io | ✅ default |
-| **SigMatrix** | Detection rule engine (Sigma → backends) | ✅ crates.io | ✅ default |
-| **GhostPacket** | Packet analysis (PCAP, dissectors) | ✅ crates.io | ✅ default |
-| **MemoryHound** | Memory forensics (Windows dumps) | ✅ crates.io | ✅ default |
-| **RedOps** | Adversary emulation (Atomic Red Team) | ✅ crates.io | ✅ default |
+| **Drift** | Red-team proxy (HTTP/SOCKS5, TLS MITM) | ✅ crates.io | ✅ default |
+| **Slate** | Secure terminal mesh (onion routing) | ✅ crates.io | ✅ default |
+| **Halo** | Detection rule engine (Sigma → backends) | ✅ crates.io | ✅ default |
+| **Trace** | Packet analysis (PCAP, dissectors) | ✅ crates.io | ✅ default |
+| **Haven** | Memory forensics (Windows dumps) | ✅ crates.io | ✅ default |
+| **Veil** | Adversary emulation (Atomic Red Team) | ✅ crates.io | ✅ default |
 
 ---
 
@@ -189,11 +189,11 @@ Package format: `.kpkg` (tar.gz + signature + metadata)
 
 ### Kernel Hardening
 - KASLR: Kernel base address randomized on boot
-- SMEP: Prevents kernel from executing userland code
-- SMAP: Prevents kernel from reading userland memory
+- SMEP: Prevents Vale from executing userland code
+- SMAP: Prevents Vale from reading userland memory
 - W^X: Code pages are either writable or executable, never both
 - kptr_restrict: Kernel pointers hidden from /proc
-- lockdown module: Prevents modifying kernel state
+- lockdown module: Prevents modifying Vale state
 
 ### Userspace Hardening
 - GCC stack protector on all binaries
@@ -203,7 +203,7 @@ Package format: `.kpkg` (tar.gz + signature + metadata)
 - seccomp-bpf on all daemons
 - No privileged containers
 - AppArmor profiles on all services
-- UEFI Secure Boot (signed GRUB + kernel)
+- UEFI Secure Boot (signed GRUB + Vale)
 
 ### Network Hardening
 - No IPv6 router advertisements accepted
@@ -224,16 +224,16 @@ Source Code → Build Scripts → Reproducible ISO → Signed Release
 ```
 
 1. **Build environment:** Docker container with locked toolchain (Rust nightly, musl, xorriso, grub2)
-2. **Build process:** Fully scripted via `keironiso build` command
+2. **Build process:** Fully scripted via `anvil build` command
 3. **Artifact:** ISO file + SHA256 hash + GPG signature
-4. **Verification:** Any contributor can run `keironiso verify` and confirm binary == source
+4. **Verification:** Any contributor can run `anvil verify` and confirm binary == source
 
 ### CI/CD Pipeline (GitHub Actions)
 
 | Trigger | Action |
 |---------|--------|
 | Every PR | Rustfmt + clippy + cargo test on all repos |
-| Every PR on kernel | QEMU boot test (boots to login prompt) |
+| Every PR on Vale | QEMU boot test (boots to login prompt) |
 | Every merge to main | Nightly ISO build |
 | Every merge to stable | Weekly ISO build |
 | Every release tag | Signed release artifacts published |
@@ -242,9 +242,9 @@ Source Code → Build Scripts → Reproducible ISO → Signed Release
 
 ## Comparison with Existing Distros
 
-| Feature | Keiron Linux | Kali Linux | Tails | Qubes OS |
+| Feature | Orin Labs | Kali Linux | Tails | Qubes OS |
 |---------|-------------|------------|-------|----------|
-| Memory-safe kernel | ✅ Rust | ❌ C | ❌ Linux | ❌ Linux |
+| Memory-safe Vale | ✅ Rust | ❌ C | ❌ Linux | ❌ Linux |
 | Reproducible builds | ✅ | ❌ | ❌ | ❌ |
 | Signed packages | ✅ | ✅ | ✅ | ✅ |
 | Rust-first toolchain | ✅ | ❌ | ❌ | ❌ |
@@ -258,7 +258,7 @@ Source Code → Build Scripts → Reproducible ISO → Signed Release
 
 ## What Makes It Different
 
-1. **Rust in the kernel.** Not a Linux distro with Rust tools. An actual OS with a Rust kernel. This is the hardest thing to build and the most impressive thing to have built.
+1. **Rust in the Vale.** Not a Linux distro with Rust tools. An actual OS with a Rust Vale. This is the hardest thing to build and the most impressive thing to have built.
 
 2. **Reproducible builds.** The ISO you download is verifiable against the source anyone can build themselves.
 

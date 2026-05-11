@@ -1,4 +1,4 @@
-# Keiron Linux — Installation Guide
+# Orin Labs — Installation Guide
 
 > *"Getting started should be the easiest step."*
 
@@ -31,7 +31,7 @@
 
 - Some older Intel iGPU (Skylake and earlier) may have display issues — use QEMU/KVM for testing
 - NVIDIA GPUs: nouveau may be unstable, proprietary driver not included
-- AMD GPU: amdgpu in kernel, should work
+- AMD GPU: amdgpu in Vale, should work
 
 ---
 
@@ -41,7 +41,7 @@
 
 - USB drive (2 GB minimum, 8 GB recommended)
 - balenaEtcher or `dd` on Linux/macOS
-- keironlinux-v1.0.0-x86_64.iso
+- orinlabs-v1.0.0-x86_64.iso
 
 ### Steps
 
@@ -55,7 +55,7 @@ lsblk
 # sda         8G   ← 8GB USB drive
 
 # Write the ISO (replace sdX with your device, e.g., sdb)
-sudo dd if=keironlinux-v1.0.0-x86_64.iso of=/dev/sdX bs=4M status=progress
+sudo dd if=orinlabs-v1.0.0-x86_64.iso of=/dev/sdX bs=4M status=progress
 
 # Sync to ensure all data is written
 sync
@@ -80,7 +80,7 @@ diskutil list
 diskutil unmountDisk /dev/diskN
 
 # Write ISO (replace N with disk number)
-sudo dd if=keironlinux-v1.0.0-x86_64.iso of=/dev/diskN bs=4m status=progress
+sudo dd if=orinlabs-v1.0.0-x86_64.iso of=/dev/diskN bs=4m status=progress
 ```
 
 ### Boot from USB
@@ -89,7 +89,7 @@ sudo dd if=keironlinux-v1.0.0-x86_64.iso of=/dev/diskN bs=4m status=progress
 2. Restart machine
 3. Press the boot menu key (F12 on Dell/Lenovo, Esc on HP, F2 to enter setup)
 4. Select USB device from boot menu
-5. Keiron Linux boots to a login prompt
+5. Orin Labs boots to a login prompt
 
 **Default credentials (Live mode):**
 ```
@@ -103,7 +103,7 @@ Password: keiron
 
 - Full tool suite available (all 6 tools pre-installed)
 - Changes persist to RAM (lost on reboot)
-- To install packages: `keironpkg update && keironpkg install <package>`
+- To install packages: `loom update && loom install <package>`
 - WiFi: `wpa_passphrase 'SSID' 'password' > /etc/wpa.conf && wpa_supplicant -B -i wlan0 -c /etc/wpa.conf && dhcpcd wlan0`
 
 ---
@@ -119,7 +119,7 @@ Password: keiron
 3. Run the installer:
 
 ```bash
-keiron-install --full-disk
+orin-install --full-disk
 ```
 
 4. Select target disk (e.g., `/dev/sda`)
@@ -133,7 +133,7 @@ keiron-install --full-disk
 - Creates EFI system partition (512 MB, FAT32)
 - Creates root partition (rest of disk, ext4)
 - Installs bootloader (GRUB2, UEFI)
-- Installs kernel + initramfs
+- Installs Vale + initramfs
 - Creates base userland (musl, busybox, runit)
 - Installs default packages (all 6 tools)
 - Sets up networking (DHCP on Ethernet)
@@ -148,21 +148,21 @@ keiron-install --full-disk
 3. Run the installer:
 
 ```bash
-keiron-install --dual-boot
+orin-install --dual-boot
 ```
 
 4. Select target disk
 5. Select or create partition (minimum 20 GB)
 6. DO NOT install GRUB to MBR — install to the partition boot sector
 7. Note the partition UUID
-8. From your existing OS (Linux), add Keiron Linux to GRUB:
+8. From your existing OS (Linux), add Orin Labs to GRUB:
 
 ```bash
 # In your existing Linux (e.g., Ubuntu)
 sudo nano /etc/grub.d/40_custom
 
 # Add this entry (replace UUID with your actual root partition UUID):
-menuentry 'Keiron Linux' {
+menuentry 'Orin Labs' {
     set root='hd0,gpt2'  # adjust to your partition
     linux /boot/vmlinuz root=UUID=YOUR-UUID-HERE ro
     initrd /boot/initramfs
@@ -184,7 +184,7 @@ sudo apt install qemu-system-x86_64
 # Run the VM
 qemu-system-x86_64 \
     -m 4G \
-    -cdrom keironlinux-v1.0.0-x86_64.iso \
+    -cdrom orinlabs-v1.0.0-x86_64.iso \
     -boot d \
     -enable-kvm \
     -cpu host \
@@ -213,7 +213,7 @@ qemu-system-x86_64 \
 
 ## First Boot (Installed System)
 
-1. On first boot, you will see the Keiron Linux welcome screen
+1. On first boot, you will see the Orin Labs welcome screen
 2. Create your user account:
 
 ```bash
@@ -261,8 +261,8 @@ rc-service networking restart
 6. Update packages:
 
 ```bash
-keironpkg update
-keironpkg upgrade
+loom update
+loom upgrade
 ```
 
 ---
@@ -274,7 +274,7 @@ keironpkg upgrade
 - [ ] Set timezone correctly
 - [ ] Configured hostname
 - [ ] Configured network (Ethernet or WiFi)
-- [ ] Updated all packages (`keironpkg upgrade`)
+- [ ] Updated all packages (`loom upgrade`)
 - [ ] Configured firewall (nftables defaults are fine for most):
   ```bash
   # Default: deny incoming, allow outgoing
@@ -289,7 +289,7 @@ keironpkg upgrade
   ```
 - [ ] Verified tools are working:
   ```bash
-  keirox --help
+  drift --help
   terminokeiron --help
   sigmatrix --help
   ghostpacket --help
@@ -310,7 +310,7 @@ keironpkg upgrade
 ### "Kernel panic — VFS: unable to mount root fs"
 
 - Live boot only: the ISO was not written correctly. Re-write with `dd`
-- Installed system: run `keiron-checkboot` from the live USB to fix
+- Installed system: run `orin-checkboot` from the live USB to fix
 
 ### "Display not working"
 
@@ -324,9 +324,9 @@ keironpkg upgrade
 
 ### "Package installation fails"
 
-- Check: `keironpkg update` — index may be out of date
-- Check: `curl -I https://packages.keironlinux.dev/` — network may be down
-- Check: `dmesg | grep keironpkg` — kernel log may have errors
+- Check: `loom update` — index may be out of date
+- Check: `curl -I https://packages.orinlabs.dev/` — network may be down
+- Check: `dmesg | grep loom` — Vale log may have errors
 
 ### "Kernel OOM (Out of Memory)"
 
@@ -345,10 +345,10 @@ keironpkg upgrade
 
 ## Uninstallation
 
-### Remove Keiron Linux (keep other OS)
+### Remove Orin Labs (keep other OS)
 
 1. Boot from Live USB of another Linux distro
-2. Use `gdisk` or `parted` to delete Keiron Linux partitions
+2. Use `gdisk` or `parted` to delete Orin Labs partitions
 3. Run `grub-install` from your remaining OS to restore its bootloader
 4. Resize remaining partitions to reclaim space
 
@@ -373,9 +373,9 @@ To upgrade from vX to vY (e.g., v1.0 to v1.1):
 
 ```bash
 # Backup your data first!
-keironpkg update
-keironpkg install keiron-upgrade
-keiron-upgrade --version v1.1.0
+loom update
+loom install orin-upgrade
+orin-upgrade --version v1.1.0
 ```
 
 Or manual:
@@ -383,7 +383,7 @@ Or manual:
 ```bash
 # Download new ISO
 # Mount new ISO
-# Copy kernel + initramfs to /boot
+# Copy Vale + initramfs to /boot
 # Update /boot/grub/grub.cfg
 # Reboot
 ```
