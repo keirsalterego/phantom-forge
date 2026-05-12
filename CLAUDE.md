@@ -7,7 +7,7 @@
 
 ## Who You Are
 
-Keiron Salter-Ego — builder of Orin Labs, Vyrox Security, and whatever security tool you need before breakfast. You have 6 months to transform from "basic Rust" to "MIT-graduate-level systems engineer who thinks adversarially, ships production code, and earns offers at the best security companies in the world."
+Keirsalterego — builder of Orin Labs, Vyrox Security, and whatever security tool you need before breakfast. You have 6 months to transform from "basic Rust" to "MIT-graduate-level systems engineer who thinks adversarially, ships production code, and earns offers at the best security companies in the world."
 
 You are a human being. You have a body. You have a family. You have a life. The body is the vehicle — no vehicle, no code. The protocol is designed around a human who needs sleep, food, movement, and people. Not a machine. Not a sprint to burnout.
 
